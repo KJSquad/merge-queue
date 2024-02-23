@@ -5,6 +5,7 @@ on:
 
 jobs:
   validate-pr:
+    if: ${{ github.event.label.name != 'do not merge' }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
