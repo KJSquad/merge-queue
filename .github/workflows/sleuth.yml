@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    types:
+      - closed
+
+  workflow_dispatch:
+
+jobs:
+  Sleuth:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+      - uses: actions/checkout@v3
+
+      - name: Display info
+        run: | 
+          pwd
+          tree -a -I '.git'
+          git status
+
+      - name: Send webhook to Sleuth
+        run: |
+          curl -X POST -H "Authorization: Bearer ${{ secrets.TOKEN }}" -d environment=production -d sha=${{ github.sha }} https://app.sleuth.io/api/1/deployments/lem00r/merge-queue-test/register_deploy
